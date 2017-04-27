@@ -15,6 +15,7 @@ class ExpressHTTPServer {
     this.password = options.password;
     this.cache = options.cache;
     this.gzip = options.gzip || false;
+    this.staticAssetOptions = Object.assign({}, options.staticAssetOptions);
     this.beforeMiddleware = options.beforeMiddleware || noop;
     this.afterMiddleware = options.afterMiddleware || noop;
     this.forbiddenAssets = [
@@ -54,7 +55,7 @@ class ExpressHTTPServer {
           res.sendStatus(404);
         });
       });
-      app.use(express.static(this.distPath));
+      app.use(express.static(this.distPath, this.staticAssetOptions));
       app.get('/assets/*', function(req, res) {
         res.sendStatus(404);
       });
